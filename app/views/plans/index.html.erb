@@ -1,3 +1,35 @@
-<h1>旅行計画一覧</h1>
+<div class="simple-container">
+  <%# <h1><%= @plan.title %> 旅行計画</h1> 
+  <% if user_signed_in? %>
+      <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete } %>
+      <% else %>
+      <%= link_to "新規登録", new_user_registration_path %> |
+      <%= link_to "ログイン", new_user_session_path %>
+      <% end %>
 
+  <!-- 3つの大きなメニューボタン -->
+  <div class="menu-list">
+    <!-- 1. 行き先リストへ -->
+    <%= link_to root_path(@plan), class: "menu-card pink" do %>
+      <h2>✈️ 行きたい場所リスト</h2>
+      <p>候補地を見たり、追加したりします。</p>
+    <% end %>
+
+    <!-- 2. 日程調整へ -->
+    <%= link_to root_path(@plan), class: "menu-card green" do %>
+      <h2>🗓 日程調整</h2>
+      <p>みんなの空いている日を確認します。</p>
+    <% end %>
+
+    <!-- 3. スケジュールへ -->
+    <%= link_to root_path(@plan), class: "menu-card blue" do %>
+      <h2>🕒 タイムスケジュール</h2>
+      <p>当日の予定を立てます。</p>
+    <% end %>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <%= link_to "トップに戻る", root_path %>
+  </div>
+</div>
 

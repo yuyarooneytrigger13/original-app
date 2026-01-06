@@ -1,3 +1,0 @@
-class Plan < ApplicationRecord
-  
-end

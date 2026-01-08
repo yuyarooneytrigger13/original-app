@@ -1,0 +1,59 @@
+<div class="simple-container">
+  <h1>行きたい場所リスト</h1>
+
+  <!-- リスト表示 -->
+  <ul class="destination-list">
+    <% @destinations.each do |dest| %>
+      <li class="destination-item" style="display: flex; align-items: center;">
+        <% if dest.image.attached? %>
+          <%= image_tag dest.image, size: "100x100" %>
+        <% end %>
+        
+        <div class="text-area">
+          <h3><%= dest.name %></h3>
+          <p><%= dest.description %></p>
+          <small>投稿者: <%= dest.user.nickname %></small>
+        </div>
+
+        <div class="right-actions" style="margin-left: auto;">
+        <% if user_signed_in? && current_user.id == dest.user_id %>
+          <div class="action-buttons" style="display: flex; gap: 10px; margin-left: 15px;">
+            <%= link_to edit_plan_destination_path(@plan, dest), style: "color: #4b5563;" do %>
+              <i class="fa-solid fa-pen"></i> 編集
+            <% end %>
+
+            <%= link_to plan_destination_path(@plan, dest), 
+                data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, 
+                style: "color: #ef4444;" do %>
+              <i class="fa-solid fa-trash"></i> 削除
+            <% end %>
+          </div>
+        <% end %>
+        </div>
+        
+
+        <!-- いいねボタン -->
+        <%= turbo_frame_tag "like_section_#{dest.id}" do %>
+  
+  <div class="like-container">
+    <span class="like-count">
+      <%= dest.likes_count %>
+    </span>
+
+    <%= button_to update_likes_plan_destination_path(@plan, dest), method: :post, class: "heart-button" do %>
+      ❤
+    <% end %>
+  </div>
+
+<% end %>
+    </li>
+    <% end %>
+  </ul>
+      
+  <!-- 追加ボタン -->
+  <div style="margin-bottom: 20px;">
+    <%= link_to "+ 新しい場所を追加する", new_plan_destination_path(@plan), class: "simple-btn" %>
+  </div>
+
+  <%= link_to "メニューに戻る", plan_path(@plan) %>
+</div>

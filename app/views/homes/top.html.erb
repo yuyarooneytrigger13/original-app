@@ -6,7 +6,16 @@
     <div class="map-visual">
         <%# ここに地図を入れる %>
     </div>
-    <div class="bottom-content">
-        <%=link_to "旅行計画をはじめる", plans_path, class: "top-btn" %>
-    </div>
+    <div class="cta-buttons">
+    <% if user_signed_in? %>
+      <!-- ログイン中：すぐに計画画面へ -->
+      <%= link_to "旅行計画に進む", plan_path(Plan.first), class: "main-btn" %>
+    
+    <% else %>
+      <!-- 未ログイン：まずは登録から -->
+      <%= link_to "新規登録", new_user_registration_path, class: "main-btn" %>
+      <p class="sub-text">すでにアカウントをお持ちの方は <%= link_to "ログイン", new_user_session_path %></p>
+    <% end %>
+  </div>
+</div>
 </div>

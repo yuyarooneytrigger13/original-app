@@ -1,5 +1,12 @@
 class PlansController < ApplicationController
-  def index
+
+  def new
+    @plan = Plan.new
+  end
+
+
+  def show
+    @plan = Plan.find(params[:id])
   end
 
 end

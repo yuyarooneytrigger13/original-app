@@ -1,7 +1,13 @@
 Rails.application.routes.draw do
   devise_for :users
   root to: "homes#top"
-  resources :homes, only: [:index]
-  resources :plans, only: [:index, :show]
+  resources :plans do
+    resources :destinations do
+      member do
+        post 'update_likes'
+      end
+    end
+  end
+
   
 end

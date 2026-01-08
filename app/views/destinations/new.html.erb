@@ -1,0 +1,40 @@
+<div class="simple-container">
+  <h1>新しい行き先を追加</h1>
+
+  <%= form_with(model: [@plan, @destination], local: true) do |f| %>
+
+    <!-- エラーメッセージのデザインを適用 -->
+    <% if @destination.errors.any? %>
+      <div class="error-area">
+        <strong>入力内容を確認してください：</strong>
+        <ul>
+          <% @destination.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label :name, "場所の名前" %>
+      <%= f.text_field :name, class: "form-control", placeholder: "例：清水寺、おしゃれなカフェ" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :description, "コメント・行きたい理由" %>
+      <%= f.text_area :description, class: "form-control", rows: 4, placeholder: "ここに行きたい理由は？（例：抹茶ティラミスが有名らしい！）" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :image, "写真（あれば）" %>
+      <%= f.file_field :image, class: "form-control" %>
+    </div>
+
+    <div style="margin-top: 30px;">
+      <%= f.submit "✨ リストに追加する", class: "simple-btn" %>
+    </div>
+
+  <% end %>
+
+  <%= link_to "一覧に戻る", plan_destinations_path(@plan) %>
+</div>

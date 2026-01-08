@@ -43,8 +43,8 @@
 ## destinationsテーブル（行先候補）
 | columm              | type       | options
 | ------------------- | ---------- | ---------
-| name                | string     | null: false,foreign_key: true
-| description         | text       | null: false,foreign_key: true
+| name                | string     | null: false 
+| description         | text       | null: false
 | user_id             | references | null: false,foreign_key: true
 | plan_id             | references | null: false,foreign_key: true
 

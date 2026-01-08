@@ -1,0 +1,54 @@
+<div class="main-container">
+  <div class="header-area">
+    <h1><%= @plan.title %> のスケジュール</h1>
+  </div>
+
+  <div class="action-area">
+    <%= link_to "+ 予定を追加する", new_plan_schedule_path(@plan), class: "btn-primary" %>
+  </div>
+
+  <!-- タイムライン -->
+  <div class="timeline">
+    
+    <% @schedules.each do |schedule| %>
+      <div class="timeline-item">
+        
+        <div class="time-label">
+          <%= schedule.start_time.strftime("%H:%M") %>
+        </div>
+
+        <div class="timeline-dot"></div>
+
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title"><%= schedule.title %></h3>
+            <% if schedule.memo.present? %>
+              <p class="card-text"><%= schedule.memo %></p>
+            <% end %>
+          </div>
+
+          <!-- 削除ボタン -->
+          <div class="card-actions">
+            <%= link_to plan_schedule_path(@plan, schedule), 
+                data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, 
+                class: "btn-icon delete", style: "color: #ef4444;" do %>
+              <i class="fa-solid fa-trash"></i> 削除
+            <% end %>
+          </div>
+        </div>
+
+      </div>
+    <% end %>
+
+    <% if @schedules.empty? %>
+      <p style="text-align: center; color: #999; margin-top: 40px;">
+        まだ予定がありません。<br>上のボタンからスケジュールを立てよう！
+      </p>
+    <% end %>
+
+  </div>
+
+  <div class="footer-link">
+    <%= link_to "メニューに戻る", plan_path(@plan) %>
+  </div>
+</div>

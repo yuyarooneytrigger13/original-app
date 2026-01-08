@@ -7,6 +7,7 @@ Rails.application.routes.draw do
         post 'update_likes'
       end
     end
+    resources :schedules
   end
 
   

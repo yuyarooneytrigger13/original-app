@@ -53,12 +53,13 @@
   belongs_to :plan
   has_many   :votes
 
-## votesテーブル（熱量・評価の投票）
+## scheduleテーブル（タイムスケジュール）
 | columm              | type       | options
 | ------------------- | ---------- | ---------
-| user_id             | references | null: false,foreign_key: true
-| destination_id      | references | null: false,foreign_key: true
-| score               | integer    | null: false
+| title          | string | null: false
+| start_time      | datetime | null: false
+| memo               | string    | null: false
+| plan_id    | references | null: false,foreign_key: true
 
 
 ## visited_recordsテーブル（訪問記録）

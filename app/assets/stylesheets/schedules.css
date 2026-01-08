@@ -1,0 +1,157 @@
+/* 全体のコンテナ */
+.main-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  color: #333;
+}
+
+/* ヘッダーエリア */
+.header-area {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.header-area h1 {
+  font-size: 24px;
+  color: #1f2937;
+  margin: 0;
+}
+
+/* アクションボタンエリア */
+.action-area {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.btn-primary {
+  display: inline-block;
+  background-color: #2563eb;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+}
+
+/* タイムラインエリア */
+.timeline {
+  position: relative;
+  padding: 10px 0;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 76px; 
+  width: 2px;
+  background-color: #e5e7eb;
+  z-index: 0;
+}
+
+.timeline-item {
+  display: flex;
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 1;
+}
+
+.time-label {
+  width: 60px;
+  text-align: right;
+  font-weight: bold;
+  color: #6b7280;
+  font-size: 14px;
+  padding-top: 14px; 
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.timeline-dot {
+  width: 14px;
+  height: 14px;
+  background-color: #3b82f6;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #3b82f6;
+  margin-top: 16px; 
+  margin-right: 20px;
+  flex-shrink: 0;
+  background-clip: padding-box;
+}
+
+.card {
+  flex-grow: 1;
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.card-content {
+  flex: 1;
+  padding-right: 10px;
+}
+
+.card-title {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #111827;
+}
+
+.card-text {
+  margin: 0;
+  font-size: 14px;
+  color: #4b5563;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.card-actions {
+  flex-shrink: 0;
+}
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.btn-icon:hover {
+  background-color: #fee2e2;
+}
+
+.footer-link {
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.footer-link a {
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.footer-link a:hover {
+  text-decoration: underline;
+}

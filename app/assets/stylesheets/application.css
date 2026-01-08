@@ -1,3 +1,5 @@
+@import "schedules";
+
 /* 全体 */
 .simple-container {
   max-width: 800px;
@@ -6,7 +8,7 @@
   font-family: sans-serif;
 }
 
-/* メニューカードのデザイン */
+/* メニューカード */
 .menu-list {
   display: flex;
   flex-direction: column;
@@ -50,7 +52,7 @@
   border-radius: 5px;
   display: inline-block;
 }
-/* 行先リストのフォームデザイン */
+/* 行先リストのフォーム */
 .simple-container {
   max-width: 600px; 
   margin: 40px auto; 

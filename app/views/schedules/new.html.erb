@@ -1,0 +1,43 @@
+<div class="main-container">
+  <div class="header-area">
+    <h1>予定を追加</h1>
+  </div>
+
+  <%= form_with(model: [@plan, @schedule], local: true) do |f| %>
+
+    <% if @schedule.errors.any? %>
+      <div style="background: #ffebe9; padding: 15px; border-radius: 8px; color: #d12c24; margin-bottom: 20px;">
+        <ul>
+          <% @schedule.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div style="margin-bottom: 20px;">
+      <%= f.label :start_time, "時間", style: "display:block; font-weight:bold; margin-bottom:5px;" %>
+      <!-- スマホで使いやすい日時入力フォーム -->
+      <%= f.datetime_field :start_time, class: "form-control", value: @schedule.start_time&.strftime("%Y-%m-%dT%H:%M") %>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <%= f.label :title, "やること・場所", style: "display:block; font-weight:bold; margin-bottom:5px;" %>
+      <%= f.text_field :title, class: "form-control", placeholder: "例：京都駅集合、ランチ" %>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <%= f.label :memo, "メモ（任意）", style: "display:block; font-weight:bold; margin-bottom:5px;" %>
+      <%= f.text_area :memo, class: "form-control", rows: 3, placeholder: "集合場所の詳細など" %>
+    </div>
+
+    <div style="margin-top: 30px;">
+      <%= f.submit "追加する", class: "btn-primary" %>
+    </div>
+
+  <% end %>
+
+  <div class="footer-link">
+    <%= link_to "キャンセル", plan_schedules_path(@plan) %>
+  </div>
+</div>

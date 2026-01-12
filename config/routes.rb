@@ -10,7 +10,9 @@ Rails.application.routes.draw do
     resources :schedules
     resources :availabilities
     resources :candidates
+    
   end
+  resources :visited_records, only: [:index, :create, :destroy]
 
   
 end

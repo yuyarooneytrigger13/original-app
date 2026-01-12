@@ -78,7 +78,6 @@
 | columm              | type       | options
 | ------------------- | ---------- | ---------
 | user_id             | references | null: false,foreign_key: true
-| prefecture_code     | references | null: false,foreign_key: true
-| plan_id             | references | null: false,foreign_key: true
-| visited_date        | integer    | null: false
+| prefecture_id       | references | null: false,foreign_key: true
+| visited_date        | date       | null: false
 | review              | string     | null: false

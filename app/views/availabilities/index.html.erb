@@ -1,0 +1,82 @@
+
+
+<div class="main-container">
+  <div class="header-area">
+    <h1>日程調整表</h1>
+  </div>
+
+    
+    <div class="action-area">
+    <div class="add-candidate-form" style="margin-bottom: 15px;">
+      <%= form_with model: [@plan, @new_candidate], local: true, style: "display: flex; gap: 10px; align-items: center;" do |f| %>
+        <%= f.date_field :date, class: "form-control", required: true, style: "width: auto;" %>
+        <%= f.submit "候補日を追加", class: "btn-secondary" %>
+      <% end %>
+    </div>
+
+    <%= link_to edit_plan_availability_path(@plan, 0), class: "btn-primary" do %>
+      <i class="fa-solid fa-pen-to-square"></i> 回答を入力する
+    <% end %>
+    </div>
+
+  <% if @perfect_candidates.present? %>
+    <div class="perfect-list">
+      <h3><i class="fa-solid fa-crown"></i> 全員行ける日！</h3>
+      <ul>
+        <% @perfect_candidates.each do |candidate| %>
+          <li>
+            <%= candidate.date.strftime("%-m/%-d") %> (<%= %w(日 月 火 水 木 金 土)[candidate.date.wday] %>)
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= month_calendar(events: @candidates, attribute: :date) do |date, candidates| %>
+    <div class="date-cell">
+      <div class="date-number"><%= date.day %></div>
+    </div>
+    <% if candidates.any? %>
+      <% candidates = candidates.first%>
+      <% ok_count = candidates.availabilities.select { |a| a.status == "ok" }.count %>
+      <% member_count = @users.count > 0 ? @users.count : 1 %>
+
+      <% box_class = if ok_count == member_count 
+       "rank-perfect"
+       elsif ok_count >= (member_count / 2.0)
+        "rank-good"
+        else
+        "rank-bad"
+        end %>
+      <div class="event-box <%= box_class %>">
+        <%= link_to edit_plan_availability_path(@plan, 0, anchor: "candidate-#{candidates.id}"), style: "text-decoration: none; color: inherit; display: block;" do %>
+          <div class="match-info">
+            
+            <% if ok_count == member_count %>
+              <i class="fa-solid fa-crown"></i>
+            <% end %>
+            <span class="count"><%= ok_count %></span> / <%= member_count %>
+          </div> 
+      <div class="member-dots">
+            <% @users.each do |user| %>
+              <% status = candidates.availabilities.find { |a| a.user_id == user.id }&.status %>
+              
+              <span class="dot <%= status %>" title="<%= user.nickname %>"></span>
+            <% end %>
+          </div>
+        <% end %>
+      <!-- 削除ボタン -->
+          <%= link_to plan_candidate_path(@plan, candidates), 
+              data: { turbo_method: :delete, turbo_confirm: "削除しますか？" }, 
+              class: "remove-btn" do %>
+            ×
+          <% end %>
+        
+      </div>
+    <% end%>  
+
+
+  <% end %>
+  <div class="footer-link">
+    <%= link_to "メニューに戻る", plan_path(@plan) %>
+  </div>

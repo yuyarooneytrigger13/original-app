@@ -1,4 +1,9 @@
-@import "schedules";
+/*
+ *= require schedules
+ *= require Calendar
+ *= require availabilities
+ *= require_self
+ */
 
 /* 全体 */
 .simple-container {

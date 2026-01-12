@@ -17,7 +17,7 @@
 
     <div style="margin-bottom: 20px;">
       <%= f.label :start_time, "時間", style: "display:block; font-weight:bold; margin-bottom:5px;" %>
-      <!-- スマホで使いやすい日時入力フォーム -->
+      
       <%= f.datetime_field :start_time, class: "form-control", value: @schedule.start_time&.strftime("%Y-%m-%dT%H:%M") %>
     </div>
 

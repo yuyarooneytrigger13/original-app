@@ -1,0 +1,44 @@
+<div class="main-container">
+  <div class="header-area">
+    <h1>回答を入力する</h1>
+  </div>
+
+  <%= form_with url: plan_availability_path(@plan, 0), method: :patch, local: true do |f| %>
+
+  <div class="answer-list">
+      <% @candidates.each do |date| %>
+      <% my_availability = date.availabilities.find { |a| a.user_id == current_user.id } %>
+        <% current_status = my_availability&.status || 'maybe' %>
+
+        <div class="answer-item" id="candidate-<%= date.id %>">
+          <div class="answer-date">
+            <%= date.date.strftime("%-m/%-d") %> (<%= %w(日 月 火 水 木 金 土)[date.date.wday] %>)
+          </div>
+
+          <div class="answer-options">
+            <label class="radio-label ok">
+              <%= radio_button_tag "availabilities[#{date.id}]", "ok", current_status == 'ok' %>
+              <span class="radio-btn">◎ 行ける</span>
+            </label>
+            <label class="radio-label maybe">
+              <%= radio_button_tag "availabilities[#{date.id}]", "maybe", current_status == 'maybe' %>
+              <span class="radio-btn">△ 微妙</span>
+            </label>
+
+            <label class="radio-label ng">
+              <%= radio_button_tag "availabilities[#{date.id}]", "ng", current_status == 'ng' %>
+              <span class="radio-btn">✕ 無理</span>
+            </label>
+          </div>
+        </div>
+  <% end %>
+  </div>
+
+    <div style="margin-top: 30px;">
+      <%= f.submit "回答を送信する", class: "btn-primary" %>
+    </div>
+  <% end %>
+  <div class="footer-link">
+    <%= link_to "キャンセル", plan_availabilities_path(@plan) %>
+  </div>
+</div>

@@ -8,6 +8,8 @@ Rails.application.routes.draw do
       end
     end
     resources :schedules
+    resources :availabilities
+    resources :candidates
   end
 
   

@@ -1,0 +1,3 @@
+class VisitedRecord < ApplicationRecord
+  belongs_to :user
+end

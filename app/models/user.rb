@@ -7,5 +7,6 @@ class User < ApplicationRecord
          validates :nickname, presence: true
   has_many :plans
   has_many :availabilities
+  has_many :visited_records, dependent: :destroy
   
 end

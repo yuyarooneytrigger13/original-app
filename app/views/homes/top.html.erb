@@ -1,21 +1,52 @@
 <div class="top-container">
-    <div class="top-content">
-        <h1 class="top-title">タイトル</h1>
-        <p class="top-subtitle">サブタイトル</p>
+  <div class="top-content">
+    <h1 class="top-title">巡る。日本</h1>
+    <p class="top-subtitle">まだ知らない都道府県が、あなたを待っている。</p>
+    <div class="scroll-indicator">
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
-    <div class="map-visual">
-        <%# ここに地図を入れる %>
+  </div>
+
+  <main>
+    <div class="map-container">
+      <div class="map-stats">
+        <div class="stat-box">
+          <span class="stat-label">制覇</span>
+          <span class="stat-value"><span id="visited-count">0</span><span class="stat-total">/47</span></span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">達成率</span>
+          <span class="stat-value" id="visited-rate">0%</span>
+        </div>
+      </div>
+      <svg id="japan-map" viewBox="0 0 650 650" style="width: 100%; height: auto;"></svg>
     </div>
-    <div class="cta-buttons">
+  </main>
+
+  <!-- モーダル -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <h3 id="modal-title"></h3>
+      <input type="date" id="input-date" class="form-control">
+      <textarea id="input-memo" class="form-control" placeholder="メモ" style="margin-top: 10px;"></textarea>
+      <div style="margin-top: 10px; display: flex; gap: 10px; justify-content: flex-end;">
+        <button onclick="saveRecord()" class="btn-primary">保存</button>
+        <button id="btn-delete" onclick="deleteRecord()" class="remove-btn" style="position: static; width: auto; height: auto; padding: 5px 10px; border-radius: 4px; opacity: 1;">削除</button>
+        <button onclick="closeModal()" class="btn-secondary">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-buttons">
     <% if user_signed_in? %>
-      <!-- ログイン中：すぐに計画画面へ -->
+      <!-- ログイン中 -->
       <%= link_to "旅行計画に進む", plan_path(Plan.first), class: "main-btn" %>
-    
     <% else %>
-      <!-- 未ログイン：まずは登録から -->
+      <!-- 未ログイン -->
       <%= link_to "新規登録", new_user_registration_path, class: "main-btn" %>
       <p class="sub-text">すでにアカウントをお持ちの方は <%= link_to "ログイン", new_user_session_path %></p>
     <% end %>
   </div>
-</div>
 </div>

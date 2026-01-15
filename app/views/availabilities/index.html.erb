@@ -24,8 +24,11 @@
       <h3><i class="fa-solid fa-crown"></i> 全員行ける日！</h3>
       <ul>
         <% @perfect_candidates.each do |candidate| %>
-          <li>
-            <%= candidate.date.strftime("%-m/%-d") %> (<%= %w(日 月 火 水 木 金 土)[candidate.date.wday] %>)
+          <li style="display: flex; align-items: center; justify-content: space-between;">
+            <%= link_to plan_schedules_path(@plan, date: candidate.date), style: "text-decoration: none; color: inherit; flex-grow: 1;" do %>
+              <%= candidate.date.strftime("%-m/%-d") %> (<%= %w(日 月 火 水 木 金 土)[candidate.date.wday] %>) <i class="fa-solid fa-chevron-right" style="font-size: 0.8em; margin-left: 5px;"></i>
+            <% end %>
+            <%= link_to "旅行を作成", new_plan_path(confirmed_date: candidate.date), class: "btn-secondary", style: "font-size: 0.8rem; padding: 4px 8px; margin-left: 10px; text-decoration: none;" %>
           </li>
         <% end %>
       </ul>
@@ -34,7 +37,9 @@
 
   <%= month_calendar(events: @candidates, attribute: :date) do |date, candidates| %>
     <div class="date-cell">
-      <div class="date-number"><%= date.day %></div>
+      <div class="date-number">
+        <%= link_to date.day, new_plan_path(confirmed_date: date), style: "text-decoration: none; color: inherit; display: block;", title: "この日で旅行を作成" %>
+      </div>
     </div>
     <% if candidates.any? %>
       <% candidates = candidates.first%>
@@ -80,3 +85,4 @@
   <div class="footer-link">
     <%= link_to "メニューに戻る", plan_path(@plan) %>
   </div>
+</div>

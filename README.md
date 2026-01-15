@@ -22,6 +22,7 @@
 | status               | text       | null: false
 | confirmed_date       | integer    | null: false
 | destination_id       | references | null: false,foreign_key: true
+| user_id              | references | null: false,foreign_key: true
 
 ## Association
   has_many :destinations

@@ -1,35 +1,157 @@
-<div class="simple-container">
+<div class="dashboard-container">
    <h1> 旅行計画</h1> 
-  <% if user_signed_in? %>
-      <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete } %>
-      <% else %>
-      <%= link_to "新規登録", new_user_registration_path %> |
-      <%= link_to "ログイン", new_user_session_path %>
+
+  <!-- 上部セクション：日程とメニュー -->
+  <div class="dashboard-top-section">
+    <!-- 左側：決定した日程 -->
+    <div class="plan-info-area">
+        <h3><i class="fa-solid fa-calendar-check"></i> 決定した日程</h3>
+        
+        <% 
+           confirmed_date_obj = nil
+           if @plan.confirmed_date.present?
+             d_str = @plan.confirmed_date.to_s
+             if d_str.length == 8
+               confirmed_date_obj = Date.new(d_str[0..3].to_i, d_str[4..5].to_i, d_str[6..7].to_i) rescue nil
+             end
+           end
+        %>
+
+        <%# カウントダウン %>
+        <% 
+           target_date = confirmed_date_obj || @perfect_candidates.find { |c| c.date >= Date.today }&.date
+           if target_date && target_date >= Date.today
+             days_until = (target_date - Date.today).to_i
+           end
+        %>
+
+        <% if days_until && !confirmed_date_obj %>
+          <div class="countdown-box">
+            <div class="countdown-label">旅行まであと</div>
+            <div class="countdown-display">
+              <span class="countdown-number"><%= days_until %></span>
+              <span class="countdown-unit">日</span>
+            </div>
+          </div>
+        <% end %>
+
+        <% if confirmed_date_obj %>
+          <% 
+             # 背景画像のURLを取得（最初の目的地の画像を使用）
+             bg_image_url = nil
+             if @destinations.present?
+               first_with_image = @destinations.find { |d| d.image.attached? }
+               bg_image_url = url_for(first_with_image.image) if first_with_image
+             end
+          %>
+          <%= link_to plan_schedules_path(@plan, date: confirmed_date_obj), class: "hero-plan-card" do %>
+            <% if bg_image_url %>
+              <div class="hero-bg-image" style="background-image: url('<%= bg_image_url %>');"></div>
+            <% end %>
+            
+            <div class="hero-content-wrapper">
+              <div class="hero-plan-header">
+                <span class="hero-badge">DECIDED</span>
+                <h2 class="hero-plan-title"><%= @plan.title %></h2>
+              </div>
+              
+              <div class="hero-plan-date-area">
+                <span class="hero-date-main"><%= confirmed_date_obj.strftime("%-m/%-d") %></span>
+                <span class="hero-date-wday">(<%= %w(日 月 火 水 木 金 土)[confirmed_date_obj.wday] %>)</span>
+              </div>
+
+              <% if days_until %>
+                <div class="hero-countdown">旅行まであと<span><%= days_until %></span>日！</div>
+              <% end %>
+
+              <% if @plan.status.present? %>
+                <div class="hero-plan-status">
+                  <i class="fa-solid fa-thumbtack"></i> <%= @plan.status %>
+                </div>
+              <% end %>
+              
+              <div class="hero-plan-footer">
+                <span class="hero-action-btn">計画を立てる <i class="fa-solid fa-arrow-right"></i></span>
+              </div>
+            </div>
+          <% end %>
+        <% elsif @perfect_candidates.present? %>
+          <ul class="confirmed-dates">
+            <% @perfect_candidates.each do |candidate| %>
+              <li>
+                <%= link_to plan_schedules_path(@plan, date: candidate.date), class: "confirmed-item-link" do %>
+                  <div class="confirmed-header">
+                    <span class="confirmed-date"><%= candidate.date.strftime("%-m月%-d日") %></span>
+                    <span class="confirmed-wday">(<%= %w(日 月 火 水 木 金 土)[candidate.date.wday] %>)</span>
+                    <span class="confirmed-destination"><%= @plan.title %>旅行</span>
+                    <span class="confirmed-badge">計画を立てる</span>
+                  </div>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="no-date">まだ全員行ける日はありません。<br>日程調整を進めましょう！</p>
+        <% end %>
+
+        <div style="margin-top: 20px;">
+          <%= link_to "旅行計画一覧", plans_path, class: "btn-primary-link" %>
+        </div>
+    </div>
+
+    <!-- 右側：メニューボタン（縦並び） -->
+    <div class="nav-menu-area">
+      <!-- 1. 日程調整へ -->
+      <%= link_to plan_availabilities_path(@plan), class: "menu-card green" do %>
+        <h2>🗓 日程調整</h2>
+        <p>みんなの空いている日を確認します。</p>
       <% end %>
 
-  <!-- 3つの大きなメニューボタン -->
-  <div class="menu-list">
-    <!-- 1. 行き先リストへ -->
-    <%= link_to plan_destinations_path(@plan), class: "menu-card pink" do %>
+      <!-- 2. スケジュールへ -->
+      <%= link_to plan_schedules_path(@plan), class: "menu-card blue" do %>
+        <h2>🕒 タイムスケジュール</h2>
+        <p>当日の予定を立てます。</p>
+      <% end %>
+
+      <!-- 3. 旅行記録一覧へ -->
+      <%= link_to visited_records_path, class: "menu-card pink" do %>
+        <h2>📔 旅行記録一覧</h2>
+        <p>旅行の思い出を記録します。</p>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- 下部セクション：行きたい場所リスト -->
+  <div class="dashboard-bottom-section">
+    <div class="section-header">
       <h2>✈️ 行きたい場所リスト</h2>
-      <p>候補地を見たり、追加したりします。</p>
-    <% end %>
+    </div>
 
-    <!-- 2. 日程調整へ -->
-    <%= link_to plan_availabilities_path(@plan), class: "menu-card green" do %>
-      <h2>🗓 日程調整</h2>
-      <p>みんなの空いている日を確認します。</p>
-    <% end %>
+    <div class="destinations-grid">
+      <% @destinations.each do |destination| %>
+        <div class="destination-card">
+          <% if destination.image.attached? %>
+            <%= image_tag destination.image, class: "destination-image" %>
+          <% else %>
+            <div class="no-image">No Image</div>
+          <% end %>
+          <h3><%= destination.try(:name) || "場所 #{destination.id}" %></h3>
+        </div>
+      <% end %>
+      
+      <% if @destinations.empty? %>
+        <div class="destination-card empty">場所がまだありません</div>
+        <div class="destination-card empty">場所がまだありません</div>
+        <div class="destination-card empty">場所がまだありません</div>
+      <% end %>
+    </div>
 
-    <!-- 3. スケジュールへ -->
-    <%= link_to plan_schedules_path(@plan), class: "menu-card blue" do %>
-      <h2>🕒 タイムスケジュール</h2>
-      <p>当日の予定を立てます。</p>
-    <% end %>
+    <div class="view-all-container">
+      <%= link_to "一覧へ >", plan_destinations_path(@plan), class: "btn-text-link" %>
+    </div>
   </div>
 
   <div style="margin-top: 20px;">
     <%= link_to "トップに戻る", root_path %>
   </div>
 </div>
-

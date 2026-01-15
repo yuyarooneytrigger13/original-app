@@ -1,0 +1,38 @@
+<div class="dashboard-container">
+  <div class="plan-form-card">
+    <h1 class="form-title">旅行計画の新規作成</h1>
+
+    <%= form_with(model: @plan, local: true) do |f| %>
+      <% if @plan.errors.any? %>
+        <div class="error-messages">
+          <h2><%= @plan.errors.count %>件のエラーが発生しました:</h2>
+          <ul>
+            <% @plan.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :title, "タイトル", class: "form-label" %>
+        <%= f.text_field :title, class: "form-input", placeholder: "例：箱根温泉旅行" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :status, "やりたいこと、行きたいところ", class: "form-label" %>
+        <%= f.text_field :status, class: "form-input", placeholder: "例：美味しい卵を食べたい！" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :confirmed_date, "確定した日程 (YYYYMMDD形式)", class: "form-label" %>
+        <%= f.number_field :confirmed_date, class: "form-input", placeholder: "例：20260115" %>
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit "作成する", class: "btn-submit" %>
+        <%= link_to "一覧に戻る", plans_path, class: "btn-cancel" %>
+      </div>
+    <% end %>
+  </div>
+</div>

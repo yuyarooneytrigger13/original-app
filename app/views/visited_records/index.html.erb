@@ -1,0 +1,47 @@
+<div class="simple-container">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <h1>📔 訪問記録一覧</h1>
+    <%= link_to root_path, class: "btn-primary", style: "text-decoration: none; padding: 10px 20px; border-radius: 20px;" do %>
+      <i class="fa-solid fa-map"></i> 地図に戻る
+    <% end %>
+  </div>
+
+  <div class="sort-links">
+    <span>並び替え:</span>
+    <%= link_to "新しい順", visited_records_path(sort: 'date_desc'), class: "sort-link #{'active' if params[:sort] == 'date_desc' || params[:sort].nil?}" %>
+    <%= link_to "古い順", visited_records_path(sort: 'date_asc'), class: "sort-link #{'active' if params[:sort] == 'date_asc'}" %>
+    <%= link_to "都道府県順", visited_records_path(sort: 'prefecture'), class: "sort-link #{'active' if params[:sort] == 'prefecture'}" %>
+  </div>
+
+  <% if @visited_records.any? %>
+    <div class="memories-grid">
+      <% @visited_records.each do |record| %>
+        <div class="memory-card">
+          <% if record.image.attached? %>
+            <%= image_tag record.image, class: "memory-image" %>
+          <% else %>
+            <div class="no-image" style="height: 180px;">No Image</div>
+          <% end %>
+          <div class="memory-content">
+            <div class="memory-date"><%= record.visited_date&.strftime("%Y/%m/%d") %></div>
+            <h3 class="memory-title"><%= record.prefecture_name %></h3>
+            <p class="memory-desc"><%= simple_format(record.review) %></p>
+            <div style="text-align: right; margin-top: 10px;">
+              <%= link_to "編集", edit_visited_record_path(record), style: "color: #0ea5e9; font-size: 0.8rem; margin-right: 10px; text-decoration: none;" %>
+              <%= link_to "削除", visited_record_path(record), data: { turbo_method: :delete, turbo_confirm: "削除しますか？" }, style: "color: #ef4444; font-size: 0.8rem;" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div style="text-align: center; padding: 50px; color: #94a3b8;">
+      <p>まだ訪問記録がありません。</p>
+      <p>トップページの日本地図から記録を追加してみましょう！</p>
+    </div>
+  <% end %>
+
+  <div style="margin-top: 30px; text-align: center;">
+    <%= link_to "トップに戻る", root_path, class: "btn-text-link" %>
+  </div>
+</div>

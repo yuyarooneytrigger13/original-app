@@ -1,0 +1,9 @@
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-links">
+      <%= link_to "トップページ", root_path %>
+      <%= link_to "旅行計画一覧", plans_path if user_signed_in? %>
+    </div>
+    <p class="copyright">&copy; 2026 巡る。日本 All Rights Reserved.</p>
+  </div>
+</footer>

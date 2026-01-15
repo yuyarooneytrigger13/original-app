@@ -1,2 +1,16 @@
-
-
+<header class="site-header">
+  <div class="header-container">
+    <div class="site-logo">
+      <%= link_to "巡る。日本", root_path %>
+    </div>
+    <nav class="site-nav">
+      <% if user_signed_in? %>
+        <span class="user-name">ようこそ、<%= current_user.nickname %>さん</span>
+        <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link" %>
+      <% else %>
+        <%= link_to "新規登録", new_user_registration_path, class: "nav-link" %>
+        <%= link_to "ログイン", new_user_session_path, class: "nav-link btn-login" %>
+      <% end %>
+    </nav>
+  </div>
+</header>

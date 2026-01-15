@@ -1,0 +1,105 @@
+<div class="dashboard-container">
+  <div class="header-flex">
+    <h1>旅行計画一覧</h1>
+    <%= link_to "新規作成", new_plan_path, class: "btn-submit", style: "width: auto; padding: 10px 20px; font-size: 1rem; margin: 0;" %>
+  </div>
+
+  <h2 style="margin-bottom: 20px; color: #334155; font-size: 1.4rem; border-left: 5px solid #0ea5e9; padding-left: 10px;">これからの旅行</h2>
+  <div class="plans-grid">
+    <% @upcoming_plans.each do |plan| %>
+      <div class="plan-card-wrapper">
+        <%= link_to plan_path(plan), class: "plan-card-link" do %>
+          <div class="plan-card">
+            <div class="plan-card-header">
+              <h2 class="plan-card-title"><%= plan.title %></h2>
+              <% if plan.confirmed_date.present? %>
+                <span class="status-badge confirmed">日程確定</span>
+              <% else %>
+                <span class="status-badge planning">計画中</span>
+              <% end %>
+            </div>
+            
+            <div class="plan-card-body">
+              <p class="plan-status-text"><%= plan.status.presence || "詳細未定" %></p>
+              
+              <div class="plan-date-info">
+                <i class="fa-regular fa-calendar"></i>
+                <% if plan.confirmed_date.present? %>
+                  <% 
+                     d = plan.confirmed_date.to_s
+                     # YYYYMMDD形式を想定して日付オブジェクトに変換
+                     if d.length == 8
+                       date_obj = Date.new(d[0..3].to_i, d[4..5].to_i, d[6..7].to_i) rescue nil
+                       formatted_date = date_obj&.strftime("%Y年%-m月%-d日")
+                     end
+                  %>
+                  <%= formatted_date || d %>
+                <% else %>
+                  日程調整中
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <%= link_to plan_path(plan), data: { turbo_method: :delete, turbo_confirm: "「#{plan.title}」を削除してもよろしいですか？" }, class: "delete-plan-btn" do %>
+          削除
+        <% end %>
+      </div>
+    <% end %>
+
+    <!-- 新規作成カード -->
+    <%= link_to new_plan_path, class: "plan-card-link new-plan-card" do %>
+      <div class="plan-card dashed">
+        <div class="new-plan-content">
+          <i class="fa-solid fa-plus"></i>
+          <span>新しい計画を立てる</span>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @past_plans.any? %>
+    <h2 style="margin-top: 50px; margin-bottom: 20px; color: #64748b; font-size: 1.4rem; border-left: 5px solid #94a3b8; padding-left: 10px;">思い出の旅行</h2>
+    <div class="plans-grid">
+      <% @past_plans.each do |plan| %>
+        <div class="plan-card-wrapper">
+          <%= link_to plan_path(plan), class: "plan-card-link", style: "opacity: 0.9;" do %>
+            <div class="plan-card" style="background-color: #f8fafc;">
+              <div class="plan-card-header">
+                <h2 class="plan-card-title" style="color: #475569;"><%= plan.title %></h2>
+                <span class="status-badge" style="background-color: #e2e8f0; color: #475569;">終了</span>
+              </div>
+              
+              <div class="plan-card-body">
+                <p class="plan-status-text"><%= plan.status.presence || "詳細未定" %></p>
+                
+                <div class="plan-date-info">
+                  <i class="fa-regular fa-calendar-check"></i>
+                  <% if plan.confirmed_date.present? %>
+                    <% 
+                       d = plan.confirmed_date.to_s
+                       if d.length == 8
+                         date_obj = Date.new(d[0..3].to_i, d[4..5].to_i, d[6..7].to_i) rescue nil
+                         formatted_date = date_obj&.strftime("%Y年%-m月%-d日")
+                       end
+                    %>
+                    <%= formatted_date || d %>
+                  <% else %>
+                    日程不明
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          <%= link_to plan_path(plan), data: { turbo_method: :delete, turbo_confirm: "「#{plan.title}」を削除してもよろしいですか？" }, class: "delete-plan-btn" do %>
+            削除
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+  
+  <div style="margin-top: 30px; text-align: center;">
+    <%= link_to "トップに戻る", root_path, style: "text-decoration: none; color: #64748b;" %>
+  </div>
+</div>

@@ -31,6 +31,7 @@
       <h3 id="modal-title"></h3>
       <input type="date" id="input-date" class="form-control">
       <textarea id="input-memo" class="form-control" placeholder="メモ" style="margin-top: 10px;"></textarea>
+      <input type="file" id="input-image" class="form-control" accept="image/*" style="margin-top: 10px;">
       <div style="margin-top: 10px; display: flex; gap: 10px; justify-content: flex-end;">
         <button onclick="saveRecord()" class="btn-primary">保存</button>
         <button id="btn-delete" onclick="deleteRecord()" class="remove-btn" style="position: static; width: auto; height: auto; padding: 5px 10px; border-radius: 4px; opacity: 1;">削除</button>
@@ -42,7 +43,16 @@
   <div class="cta-buttons">
     <% if user_signed_in? %>
       <!-- ログイン中 -->
-      <%= link_to "旅行計画に進む", plan_path(Plan.first), class: "main-btn" %>
+      <% if current_user.plans.exists? %>
+        <%= link_to "旅行計画に進む", plan_path(current_user.plans.last), class: "main-btn" %>
+        <% if current_user.plans.count > 1 %>
+          <p class="sub-text" style="margin-top: 15px;">
+            <%= link_to "計画一覧を見る", plans_path %>
+          </p>
+        <% end %>
+      <% else %>
+        <%= link_to "旅行計画に進む", new_plan_path, class: "main-btn" %>
+      <% end %>
     <% else %>
       <!-- 未ログイン -->
       <%= link_to "新規登録", new_user_registration_path, class: "main-btn" %>

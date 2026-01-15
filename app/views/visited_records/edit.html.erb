@@ -1,0 +1,33 @@
+<div class="simple-container">
+  <h1>訪問記録の編集</h1>
+
+  <%= form_with model: @visited_record, local: true do |f| %>
+    <div class="form-group">
+      <%= f.label :prefecture, "都道府県" %>
+      <%= f.select :prefecture, VisitedRecord::PREFECTURES.invert, {}, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :visited_date, "訪問日" %>
+      <%= f.date_field :visited_date, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :image, "写真" %>
+      <%= f.file_field :image, class: "form-control", accept: "image/*" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :review, "メモ・感想" %>
+      <%= f.text_area :review, class: "form-control", style: "min-height: 150px;" %>
+    </div>
+
+    <div class="auth-actions">
+      <%= f.submit "更新する", class: "auth-btn" %>
+    </div>
+  <% end %>
+
+  <div style="margin-top: 20px; text-align: center;">
+    <%= link_to "一覧に戻る", visited_records_path, class: "btn-text-link" %>
+  </div>
+</div>

@@ -4,19 +4,19 @@ const GAP = 4;
 const PREFECTURES = [
   // 北海道・東北
     { id: 1, name: '北海道', row: 1, col: 11, w: 2, h: 2 },
-    { id: 2, name: '青森',   row: 3, col: 11, w: 2 },
+    { id: 2, name: '青森',   row: 3, col: 11 },
     { id: 3, name: '岩手',   row: 4, col: 12 },
     { id: 4, name: '宮城',   row: 5, col: 12 },
     { id: 5, name: '秋田',   row: 4, col: 11 },
     { id: 6, name: '山形',   row: 5, col: 11 },
-    { id: 7, name: '福島',   row: 6, col: 12 },
+    { id: 7, name: '福島',   row: 6, col: 11 },
     
     // 関東
     { id: 8, name: '茨城',   row: 7, col: 12 },
     { id: 9, name: '栃木',   row: 7, col: 11 },
     { id: 10, name: '群馬',  row: 7, col: 10 },
     { id: 11, name: '埼玉',  row: 8, col: 10 },
-    { id: 12, name: '千葉',  row: 8, col: 12 },
+    { id: 12, name: '千葉',  row: 8, col: 11 },
     { id: 13, name: '東京',  row: 9, col: 10 },
     { id: 14, name: '神奈川', row: 9, col: 11 },
 
@@ -125,14 +125,17 @@ function renderMap() {
 
     const data = visitedData[pref.id];
     const deleteBtn = document.getElementById('btn-delete');
+    const imageInput = document.getElementById('input-image');
     
     if (data) {
         document.getElementById('input-date').value = data.date;
         document.getElementById('input-memo').value = data.memo;
+        if (imageInput) imageInput.value = ''; // 入力リセット
         deleteBtn.style.visibility = 'visible';
     } else {
         document.getElementById('input-date').value = '';
         document.getElementById('input-memo').value = '';
+        if (imageInput) imageInput.value = ''; // 入力リセット
         deleteBtn.style.visibility = 'hidden';
     }
 }
@@ -147,7 +150,7 @@ async function fetchMapData() {
     if (!token) return; 
 
     try {
-        const response = await fetch('/visited_records');
+        const response = await fetch('/visited_records.json');
         if (response.ok) {
             const data = await response.json();
             visitedData = {};
@@ -169,16 +172,24 @@ async function saveRecord() {
     if (!currentPrefId) return;
     const date = document.getElementById('input-date').value;
     const memo = document.getElementById('input-memo').value;
+    const imageInput = document.getElementById('input-image');
     
     const token = document.querySelector('meta[name="csrf-token"]').content;
     
+    const formData = new FormData();
+    formData.append('visited_record[prefecture]', currentPrefId);
+    formData.append('visited_record[visited_date]', date);
+    formData.append('visited_record[review]', memo);
+    if (imageInput && imageInput.files[0]) {
+        formData.append('visited_record[image]', imageInput.files[0]);
+    }
+
     const response = await fetch('/visited_records', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
             'X-CSRF-Token': token
         },
-        body: JSON.stringify({ visited_record: { prefecture: currentPrefId, visited_date: date, review: memo } })
+        body: formData
     });
 
     if (response.ok) {

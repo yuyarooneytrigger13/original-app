@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     resources :candidates
     
   end
-  resources :visited_records, only: [:index, :create, :destroy]
+  resources :visited_records
 
   
 end

@@ -68,8 +68,11 @@ let visitedData = {};
 let currentPrefId = null;
 
 document.addEventListener('turbo:load', () => {
-    renderMap();
-    fetchMapData();
+    const mapContainer = document.getElementById('japan-map');
+    if (mapContainer) {
+        renderMap();
+        fetchMapData();
+    }
     if (window.lucide) {
         window.lucide.createIcons();
     }
@@ -220,6 +223,9 @@ function updateUI() {
     PREFECTURES.forEach(pref => {
         const rect = document.getElementById(`rect-${pref.id}`);
         const text = document.getElementById(`text-${pref.id}`);
+
+        if (!rect || !text) return;
+
         if (visitedData[pref.id]) {
             rect.classList.add('visited');
             text.classList.add('visited-text');

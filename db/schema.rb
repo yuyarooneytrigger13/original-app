@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_15_022734) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_18_043000) do
   create_table "active_storage_attachments", charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -69,10 +69,19 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_15_022734) do
     t.index ["user_id"], name: "index_destinations_on_user_id"
   end
 
+  create_table "plan_users", charset: "utf8mb3", force: :cascade do |t|
+    t.bigint "plan_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["plan_id"], name: "index_plan_users_on_plan_id"
+    t.index ["user_id"], name: "index_plan_users_on_user_id"
+  end
+
   create_table "plans", charset: "utf8mb3", force: :cascade do |t|
     t.string "title", null: false
     t.text "status", null: false
-    t.integer "confirmed_date", null: false
+    t.integer "confirmed_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
@@ -90,7 +99,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_15_022734) do
   end
 
   create_table "users", charset: "utf8mb3", force: :cascade do |t|
-    t.string "nickname", null: false
+    t.string "nickname"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -98,7 +107,18 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_15_022734) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "invitation_token"
+    t.datetime "invitation_created_at"
+    t.datetime "invitation_sent_at"
+    t.datetime "invitation_accepted_at"
+    t.integer "invitation_limit"
+    t.string "invited_by_type"
+    t.bigint "invited_by_id"
+    t.integer "invitations_count", default: 0
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
+    t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
+    t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -119,6 +139,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_15_022734) do
   add_foreign_key "candidates", "plans"
   add_foreign_key "destinations", "plans"
   add_foreign_key "destinations", "users"
+  add_foreign_key "plan_users", "plans"
+  add_foreign_key "plan_users", "users"
   add_foreign_key "plans", "users"
   add_foreign_key "schedules", "plans"
   add_foreign_key "visited_records", "users"

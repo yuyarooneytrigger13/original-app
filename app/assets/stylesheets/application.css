@@ -4,6 +4,7 @@
  *= require Calendar
  *= require availabilities
  *= require plans
+ *= require invitations
  *= require_self
   
  */
@@ -446,21 +447,19 @@ input[type="file"].form-control {
 
 /* --- 旅行計画ダッシュボード（PC向け幅広レイアウト） --- */
 .dashboard-container {
-  max-width: 1200px; /* 幅を広く設定 */
+  max-width: 1200px; 
   margin: 0 auto;
   padding: 40px 20px;
   font-family: "Helvetica Neue", Arial, sans-serif;
 }
 
-/* 上部セクション：グリッドで左右分割 */
 .dashboard-top-section {
   display: grid;
-  grid-template-columns: 1fr 350px; /* 左側は可変、右側は350px固定 */
+  grid-template-columns: 1fr 350px; 
   gap: 40px;
   margin-bottom: 60px;
 }
 
-/* 左側：決定した日程エリア */
 .plan-info-area {
   background-color: #fff;
   border: 1px solid #e2e8f0;
@@ -470,14 +469,12 @@ input[type="file"].form-control {
   height: 100%; /* 高さを揃える */
 }
 
-/* 右側：メニューボタンエリア（縦並び） */
 .nav-menu-area {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* 下部セクション：行きたい場所リスト */
 .dashboard-bottom-section {
   background-color: #f8fafc;
   border-radius: 16px;
@@ -565,13 +562,12 @@ input[type="file"].form-control {
   background-color: #e0f2fe;
 }
 
-/* レスポンシブ対応（画面が狭くなった時用） */
 @media (max-width: 900px) {
   .dashboard-top-section {
-    grid-template-columns: 1fr; /* 縦並びに変更 */
+    grid-template-columns: 1fr; 
   }
   .destinations-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2列に変更 */
+    grid-template-columns: repeat(2, 1fr); 
   }
 }
 

@@ -43,9 +43,10 @@
   <div class="cta-buttons">
     <% if user_signed_in? %>
       <!-- ログイン中 -->
-      <% if current_user.plans.exists? %>
-        <%= link_to "旅行計画に進む", plan_path(current_user.plans.last), class: "main-btn" %>
-        <% if current_user.plans.count > 1 %>
+      <% target_plan = current_user.latest_plan %>
+      <% if target_plan %>
+        <%= link_to "旅行計画に進む", plan_path(target_plan), class: "main-btn" %>
+        <% if current_user.related_plans.count > 1 %>
           <p class="sub-text" style="margin-top: 15px;">
             <%= link_to "計画一覧を見る", plans_path %>
           </p>
@@ -55,8 +56,8 @@
       <% end %>
     <% else %>
       <!-- 未ログイン -->
-      <%= link_to "新規登録", new_user_registration_path, class: "main-btn" %>
-      <p class="sub-text">すでにアカウントをお持ちの方は <%= link_to "ログイン", new_user_session_path %></p>
+      <%= link_to "新規登録", new_user_registration_path, class: "main-btn", data: { turbo_prefetch: false } %>
+      <p class="sub-text">すでにアカウントをお持ちの方は <%= link_to "ログイン", new_user_session_path, data: { turbo_prefetch: false } %></p>
     <% end %>
   </div>
 </div>

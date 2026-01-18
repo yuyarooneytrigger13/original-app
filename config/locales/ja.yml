@@ -38,3 +38,25 @@ ja:
   simple_calendar:
     previous: "« 前月"
     next: "翌月 »"
+
+  activerecord:
+    attributes:
+      user:
+        email: "メールアドレス"
+        nickname: "ニックネーム"
+        password: "パスワード"
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              taken: "はすでに使用されています"
+            nickname:
+              blank: "を入力してください"
+  errors:
+    messages:
+      not_saved:
+        one: "1件のエラーが発生したため、%{resource} は保存されませんでした:"
+        other: "%{count}件のエラーが発生したため、%{resource} は保存されませんでした:"
+      taken: "はすでに使用されています"
+      blank: "を入力してください"

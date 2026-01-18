@@ -1,9 +1,7 @@
 require "test_helper"
 
-class VisitedRecordsControllerTest < ActionDispatch::IntegrationTest
+class PlanUserTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
 end
-
-

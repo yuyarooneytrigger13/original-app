@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: {
+  invitations: 'users/invitations'
+}
   root to: "homes#top"
   resources :plans do
     resources :destinations do

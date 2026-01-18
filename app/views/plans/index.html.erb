@@ -22,6 +22,19 @@
             <div class="plan-card-body">
               <p class="plan-status-text"><%= plan.status.presence || "詳細未定" %></p>
               
+              <!-- メンバー表示 -->
+              <div class="plan-members-preview">
+                <% members = (plan.users + [plan.user]).uniq %>
+                <% members.first(5).each do |user| %>
+                  <div class="member-icon-small" title="<%= user.nickname %>">
+                    <%= user.nickname.to_s.first.upcase %>
+                  </div>
+                <% end %>
+                <% if members.count > 5 %>
+                  <span class="member-more">+<%= members.count - 5 %></span>
+                <% end %>
+              </div>
+
               <div class="plan-date-info">
                 <i class="fa-regular fa-calendar"></i>
                 <% if plan.confirmed_date.present? %>
@@ -73,6 +86,19 @@
               <div class="plan-card-body">
                 <p class="plan-status-text"><%= plan.status.presence || "詳細未定" %></p>
                 
+                <!-- メンバー表示 -->
+                <div class="plan-members-preview">
+                  <% members = (plan.users + [plan.user]).uniq %>
+                  <% members.first(5).each do |user| %>
+                    <div class="member-icon-small" title="<%= user.nickname %>">
+                      <%= user.nickname.to_s.first.upcase %>
+                    </div>
+                  <% end %>
+                  <% if members.count > 5 %>
+                    <span class="member-more">+<%= members.count - 5 %></span>
+                  <% end %>
+                </div>
+
                 <div class="plan-date-info">
                   <i class="fa-regular fa-calendar-check"></i>
                   <% if plan.confirmed_date.present? %>

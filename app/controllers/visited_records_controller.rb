@@ -14,7 +14,7 @@ class VisitedRecordsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html # index.html.erb を表示
+      format.html 
       format.json { 
         render json: @visited_records.map { |record| {
           prefecture: record.prefecture,
@@ -47,7 +47,6 @@ class VisitedRecordsController < ApplicationController
   end
 
   def destroy
-    # 一覧画面からはID、地図からは都道府県IDが送られてくる可能性があるため両方考慮
     @record = current_user.visited_records.find_by(id: params[:id]) || current_user.visited_records.find_by(prefecture: params[:id])
 
     if @record&.destroy

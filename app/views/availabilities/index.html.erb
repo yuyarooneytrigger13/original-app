@@ -5,13 +5,25 @@
     <h1>日程調整表</h1>
   </div>
 
+  <div class="members-section">
+    <h4 class="members-title">参加メンバー (<%= @users.count %>名)</h4>
+    <div class="members-list">
+      <% @users.each do |user| %>
+        <div class="member-badge">
+          <div class="member-icon"><%= user.nickname.to_s.first.upcase %></div>
+          <span class="member-name"><%= user.nickname %></span>
+        </div>
+      <% end %>
+    </div>
+  </div>
     
     <div class="action-area">
-    <div class="add-candidate-form" style="margin-bottom: 15px;">
-      <%= form_with model: [@plan, @new_candidate], local: true, style: "display: flex; gap: 10px; align-items: center;" do |f| %>
-        <%= f.date_field :date, class: "form-control", required: true, style: "width: auto;" %>
+    <div class="add-candidate-form">
+      <%= form_with model: [@plan, @new_candidate], local: true, class: "candidate-form" do |f| %>
+        <%= f.date_field :date, class: "form-control date-input", required: true %>
         <%= f.submit "候補日を追加", class: "btn-secondary" %>
       <% end %>
+      <%= link_to "このプランに友達を招待", new_user_invitation_path(plan_id: @plan.id), class: "btn" %>
     </div>
 
     <%= link_to edit_plan_availability_path(@plan, 0), class: "btn-primary" do %>
@@ -24,11 +36,11 @@
       <h3><i class="fa-solid fa-crown"></i> 全員行ける日！</h3>
       <ul>
         <% @perfect_candidates.each do |candidate| %>
-          <li style="display: flex; align-items: center; justify-content: space-between;">
-            <%= link_to plan_schedules_path(@plan, date: candidate.date), style: "text-decoration: none; color: inherit; flex-grow: 1;" do %>
+          <li class="perfect-item">
+            <%= link_to plan_schedules_path(@plan, date: candidate.date), class: "perfect-date-link" do %>
               <%= candidate.date.strftime("%-m/%-d") %> (<%= %w(日 月 火 水 木 金 土)[candidate.date.wday] %>) <i class="fa-solid fa-chevron-right" style="font-size: 0.8em; margin-left: 5px;"></i>
             <% end %>
-            <%= link_to "旅行を作成", new_plan_path(confirmed_date: candidate.date), class: "btn-secondary", style: "font-size: 0.8rem; padding: 4px 8px; margin-left: 10px; text-decoration: none;" %>
+            <%= link_to "この日程で確定", plan_path(@plan, plan: { confirmed_date: candidate.date }), data: { turbo_method: :patch, turbo_confirm: "#{candidate.date.strftime('%-m/%-d')}で日程を確定しますか？" }, class: "btn-secondary btn-confirm-date" %>
           </li>
         <% end %>
       </ul>
@@ -38,7 +50,7 @@
   <%= month_calendar(events: @candidates, attribute: :date) do |date, candidates| %>
     <div class="date-cell">
       <div class="date-number">
-        <%= link_to date.day, new_plan_path(confirmed_date: date), style: "text-decoration: none; color: inherit; display: block;", title: "この日で旅行を作成" %>
+        <%= link_to date.day, plan_path(@plan, plan: { confirmed_date: date }), data: { turbo_method: :patch, turbo_confirm: "#{date.strftime('%-m/%-d')}で日程を確定しますか？" }, class: "calendar-date-link", title: "この日で確定" %>
       </div>
     </div>
     <% if candidates.any? %>
@@ -54,7 +66,7 @@
         "rank-bad"
         end %>
       <div class="event-box <%= box_class %>">
-        <%= link_to edit_plan_availability_path(@plan, 0, anchor: "candidate-#{candidates.id}"), style: "text-decoration: none; color: inherit; display: block;" do %>
+        <%= link_to edit_plan_availability_path(@plan, 0, anchor: "candidate-#{candidates.id}"), class: "calendar-event-link" do %>
           <div class="match-info">
             
             <% if ok_count == member_count %>

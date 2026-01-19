@@ -1,84 +1,79 @@
-## usersテーブル
-| columm            | type      | options
-| ------------------| --------- | ---------
-| nickname          | string    | null: false
-| email             | string    | null: false, unique:true
-| encrypted_pa​​ssword| string    | null: false
+# アプリケーション名
+ 巡る日本
+
+## アプリケーション概要
+旅行計画の作成、日程調整、行き先候補の管理、スケジュールの作成、および訪問記録の保存を行うアプリケーションです。
+
+## URL
+  https://original-app-v3vp.onrender.com
+
+## テスト用アカウント
+- メールアドレス:test@test.com
+- パスワード:123456
+- Basic認証ID:admin
+- Basic認証パスワード:2222
+
+## 利用方法
+1. ユーザー登録
+   トップページの「新規登録」ボタンからユーザー情報を入力して登録します。
+   （上記のテスト用アカウントでログインすることも可能です）
+
+2. 旅行計画の作成
+   ログイン後、トップページのボタンから新しい旅行計画を作成します。タイトルなどを入力してください。
+
+3. 行き先と日程の調整
+   作成した計画の詳細ページにて、行きたい場所（行き先の候補）の追加や、候補日に対する参加者の都合（○・△・×）を集計して日程を決定します。
+
+4. スケジュールの作成・記録
+   決定した日程に基づいて当日のタイムスケジュールを作成したり、旅行後に訪れた場所や感想を記録として残すことができます。
+
+## アプリケーションを作成した背景
+旅行の計画を立てる際、参加者全員の都合を調整するのが難しいと感じたことから、このアプリケーションを開発しました。行き先の候補や日程の調整を目で見てわかりやすく簡単に行えるようにし、旅行計画をスムーズに進められるようにすることを目的としています。
+
+## 実装した機能についての画像やGIFおよびその説明
+### トップページ
+[![Image from Gyazo](https://i.gyazo.com/9789dec3b50d79e8e0ef5c3bf85b2617.gif)](https://gyazo.com/9789dec3b50d79e8e0ef5c3bf85b2617)
+topページには47都道府県を配置し、訪れた都道府県を登録すると色が付いてわかりやすいようにしました・
+
+### 行きたい候補ページ
+[![Image from Gyazo](https://i.gyazo.com/1e662f2ec0756ecaccf036544d2f09d2.gif)](https://gyazo.com/1e662f2ec0756ecaccf036544d2f09d2)
+一覧ページの下部にはいきたい場所を追加できるフォームを設置し、行き先候補を簡単に追加できるようにしました。
+
+###  日程調整ページ
+[![Image from Gyazo](https://i.gyazo.com/488af2a85e055dbb2e2d43381bd7a87a.gif)](https://gyazo.com/488af2a85e055dbb2e2d43381bd7a87a)
+日程調整ページでは、参加者が各候補日に対して○・△・×で一括で回答できるようにし、全員が行ける日はどれか一目でわかるようにしました。
+
+### スケジュール作成ページ
+[![Image from Gyazo](https://i.gyazo.com/c9c83f0a7c8a3dd38f8526ff6b816ffc.gif)](https://gyazo.com/c9c83f0a7c8a3dd38f8526ff6b816ffc)
+スケジュール作成ページでは、時間ごとに予定を追加できるようにし、旅行当日のタイムスケジュールを簡単に作成できるようにしました。
+
+### 旅行記録ページ
+[![Image from Gyazo](https://i.gyazo.com/9fb643b631708e483d135bc611ba78cd.gif)](https://gyazo.com/9fb643b631708e483d135bc611ba78cd)
+旅行記録ページでは、訪れた都道府県を登録し、感想や写真を添付できるようにしました。これにより、旅行の思い出を簡単に振り返ることができます。
 
 
+## 画面遷移図
 
-## Association
-  has_many :availabilities
-  has_many :destinations
-  has_many :plans
-  has_many :visited_records
+## データベース設計
 
 
-## plansテーブル（旅行計画）
+## 開発環境
+- Ruby on Rails
+- HTML/CSS
+- JavaScript
 
-| columm               | type       | options
-| -------------------  | ---------  | ---------
-| title                | string     | null: false
-| status               | text       | null: false
-| confirmed_date       | integer    | null: false
-| destination_id       | references | null: false,foreign_key: true
-| user_id              | references | null: false,foreign_key: true
+## 製作時間
+ 約50時間
 
-## Association
-  has_many :destinations
-  has_many :availabilities
-  has_many :candidates
-  has_many :schedules
-
-
-
-## availabilitiesテーブル（旅行可能日、日程回答）
-| columm               | type       | options
-| -------------------  | ---------  | ---------
-| user_id              | references | null: false,foreign_key: true
-| status               | integer    | null: false
-| candidate_id         | references | null: false,foreign_key: true
-
-## Association
-  belongs_to :candidate
-  belongs_to :user
-  
-## candidatesテーブル（候補日）
-| columm               | type       | options
-| -------------------  | ---------  | ---------
-| date                 | integer    | null: false
-| plan_id              | references | null: false,foreign_key: true
-
-## Association
-  belongs_to :plan
-  has_many   :availabilities
-
-## destinationsテーブル（行先候補）
-| columm              | type       | options
-| ------------------- | ---------- | ---------
-| name                | string     | null: false 
-| description         | text       | null: false
-| user_id             | references | null: false,foreign_key: true
-| plan_id             | references | null: false,foreign_key: true
-
-## Association
-  belongs_to :plan
-  has_many   :votes
-  has_many   :schedules
-
-## scheduleテーブル（タイムスケジュール）
-| columm              | type       | options
-| ------------------- | ---------- | ---------
-| title          | string | null: false
-| start_time      | datetime | null: false
-| memo               | string    | null: false
-| plan_id    | references | null: false,foreign_key: true
-
-
-## visited_recordsテーブル（訪問記録）
-| columm              | type       | options
-| ------------------- | ---------- | ---------
-| user_id             | references | null: false,foreign_key: true
-| prefecture_id       | references | null: false,foreign_key: true
-| visited_date        | date       | null: false
-| review              | string     | null: false
+## ローカルでの動作方法
+以下のコマンドを順に実行してください。
+```bash
+% git clone https://github.com/yuya.rooney.trigger13/original-app.git
+% cd original-app
+% bundle install
+% yarn install
+% rails db:create
+% rails db:migrate
+% rails s
+```
+その後、ブラウザで `http://localhost:3000` にアクセスしてください。
